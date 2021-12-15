@@ -6,4 +6,4 @@ Kaiser 2021 programming repository
 Sanırım otonom çalışıyor (:
 
 
-![](https://giphy.com/gifs/foxtv-amy-poehler-emmys-2015-3oEduZtPOv5OSecubu)
+![](https://media4.giphy.com/media/3oEduZtPOv5OSecubu/giphy.mp4)
