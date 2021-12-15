@@ -6,4 +6,4 @@ Kaiser 2021 programming repository
 Sanırım otonom çalışıyor (:
 
 
-![](https://giphy.com/embed/3oEduZtPOv5OSecubu.gif)
+![](https://giphy.com/embed/3oEduZtPOv5OSecubu)
