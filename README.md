@@ -2,8 +2,8 @@
 Kaiser 2021 programming repository
 
 
-Simulation hala test aşamasında çalışmıyor
++WS2812B Eklendi (:
+Sanırım otonom çalışıyor (:
 
 
-![](https://media.giphy.com/media/NJZMSqRY3rG9i/giphy.gif)
-
+![](https://giphy.com/embed/3oEduZtPOv5OSecubu.gif)
