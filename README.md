@@ -1,9 +1,9 @@
 # kaiser_6989_2021
-Kaiser 2021 İzmir Offseason Java
+Kaiser 2021 programming repository
 
 
-+WS2812B Eklendi (: <br />
-Sanırım otonom çalışıyor (:<br />
+Simulation hala test aşamasında çalışmıyor
 
 
-![](https://media.giphy.com/media/kic65zXQK8Ej84ZZQK/giphy.gif)
+![](https://media.giphy.com/media/NJZMSqRY3rG9i/giphy.gif)
+

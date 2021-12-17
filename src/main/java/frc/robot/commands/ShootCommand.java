@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter_Subsystem;;
+import frc.robot.subsystems.Shooter_Subsystem;
 
 
 public class ShootCommand extends CommandBase {
@@ -29,8 +29,6 @@ public class ShootCommand extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {
-    
-  }
+  public void end(boolean interrupted) {}
 
 }

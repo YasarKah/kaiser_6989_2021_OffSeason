@@ -35,8 +35,7 @@ public class AutoGenerator {
 
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-  public AutoGenerator(Drive_Subsystem m_drive, Shooter_Subsystem m_shooter, Indexer_Subsystem m_indexer,
-      Intake_Subsystem m_intake) {
+  public AutoGenerator(Drive_Subsystem m_drive, Shooter_Subsystem m_shooter, Indexer_Subsystem m_indexer, Intake_Subsystem m_intake) {
     this.m_drive = m_drive;
     this.m_shooter = m_shooter;
     this.m_intake = m_intake;

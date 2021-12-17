@@ -49,20 +49,11 @@ public class Drive_Subsystem extends SubsystemBase {
   TalonSRXSimCollection left_Master_Motor_sim = left_Master_Motor.getSimCollection();
   TalonSRXSimCollection right_Master_Motor_sim = right_Master_Motor.getSimCollection();
 
-  private DifferentialDrivetrainSim m_drive_sim = new DifferentialDrivetrainSim(
-          DCMotor.getCIM(2),
-          10.71,
-          9.1,
-          70,
-          Units.inchesToMeters(3),
-          0.65,
-          null
-  );
+  private DifferentialDrivetrainSim m_drive_sim = new DifferentialDrivetrainSim(DCMotor.getCIM(2), 10.71, 9.1, 70,
+      Units.inchesToMeters(3), 0.65, null);
 
   private Field2d m_field = new Field2d();
 
-  
-  
   public Drive_Subsystem() {
 
     resetEncoders();
@@ -105,28 +96,29 @@ public class Drive_Subsystem extends SubsystemBase {
 
     SmartDashboard.putData("Field", m_field);
 
-
-
   }
-
 
   @Override
   public void periodic() {
-    m_odometry.update(Rotation2d.fromDegrees(getHeading()), 
-    getLeftEncoderDistance(), 
-    getRightEncoderDistance());
-    //System.out.println(getPose());
+    m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftEncoderDistance(), getRightEncoderDistance());
+    // System.out.println(getPose());
     m_field.setRobotPose(m_odometry.getPoseMeters());
 
   }
-
 
   @Override
   public void simulationPeriodic() {
     // Set the inputs to the system. Note that we need to use
     // the output voltage, NOT the percent output.
-    m_drive_sim.setInputs(left_Master_Motor.getMotorOutputVoltage(),
-                          right_Master_Motor.getMotorOutputVoltage()); //Right side is inverted, so forward is negative voltage
+    m_drive_sim.setInputs(left_Master_Motor.getMotorOutputVoltage(), right_Master_Motor.getMotorOutputVoltage()); // Right
+                                                                                                                  // side
+                                                                                                                  // is
+                                                                                                                  // inverted,
+                                                                                                                  // so
+                                                                                                                  // forward
+                                                                                                                  // is
+                                                                                                                  // negative
+                                                                                                                  // voltage
 
     System.out.print(left_Master_Motor.getMotorOutputVoltage());
     System.out.print(right_Master_Motor.getMotorOutputVoltage());
@@ -137,52 +129,42 @@ public class Drive_Subsystem extends SubsystemBase {
     m_drive_sim.update(0.02);
 
     // Update all of our sensors.
-    left_Master_Motor_sim.setQuadratureRawPosition(
-                    distanceToNativeUnits(
-                      m_drive_sim.getLeftPositionMeters()));
-    left_Master_Motor_sim.setQuadratureVelocity(
-                    velocityToNativeUnits(
-                      m_drive_sim.getLeftVelocityMetersPerSecond()));
-    right_Master_Motor_sim.setQuadratureRawPosition(
-                    distanceToNativeUnits(
-                      m_drive_sim.getRightPositionMeters()));
-    right_Master_Motor_sim.setQuadratureVelocity(
-                    velocityToNativeUnits(
-                      m_drive_sim.getRightVelocityMetersPerSecond()));
+    left_Master_Motor_sim.setQuadratureRawPosition(distanceToNativeUnits(m_drive_sim.getLeftPositionMeters()));
+    left_Master_Motor_sim.setQuadratureVelocity(velocityToNativeUnits(m_drive_sim.getLeftVelocityMetersPerSecond()));
+    right_Master_Motor_sim.setQuadratureRawPosition(distanceToNativeUnits(m_drive_sim.getRightPositionMeters()));
+    right_Master_Motor_sim.setQuadratureVelocity(velocityToNativeUnits(m_drive_sim.getRightVelocityMetersPerSecond()));
 
-                      
     int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
     angle.set(-m_drive_sim.getHeading().getDegrees());
 
   }
 
-
-  private int distanceToNativeUnits(double positionMeters){
-    double wheelRotations = positionMeters/(2 * Math.PI * Units.inchesToMeters(3));
+  private int distanceToNativeUnits(double positionMeters) {
+    double wheelRotations = positionMeters / (2 * Math.PI * Units.inchesToMeters(3));
     double motorRotations = wheelRotations * 1;
-    int sensorCounts = (int)(motorRotations * 4096);
+    int sensorCounts = (int) (motorRotations * 4096);
     return sensorCounts;
   }
 
-  private int velocityToNativeUnits(double velocityMetersPerSecond){
-    double wheelRotationsPerSecond = velocityMetersPerSecond/(2 * Math.PI * Units.inchesToMeters(3));
+  private int velocityToNativeUnits(double velocityMetersPerSecond) {
+    double wheelRotationsPerSecond = velocityMetersPerSecond / (2 * Math.PI * Units.inchesToMeters(3));
     double motorRotationsPerSecond = wheelRotationsPerSecond * 1;
-    double motorRotationsPer100ms = motorRotationsPerSecond / 10;                                    ////?????????
-    int sensorCountsPer100ms = (int)(motorRotationsPer100ms * 4096);
+    double motorRotationsPer100ms = motorRotationsPerSecond / 10; //// ?????????
+    int sensorCountsPer100ms = (int) (motorRotationsPer100ms * 4096);
     return sensorCountsPer100ms;
   }
-
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
 
-
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-        10.0 * left_Master_Motor.getSelectedSensorVelocity() * DriveConstants.kWheel_Circumference_Meters/ DriveConstants.kEncoder_CPR,
-        10.0 * right_Master_Motor.getSelectedSensorVelocity() * DriveConstants.kWheel_Circumference_Meters/ DriveConstants.kEncoder_CPR);
+        10.0 * left_Master_Motor.getSelectedSensorVelocity() * DriveConstants.kWheel_Circumference_Meters
+            / DriveConstants.kEncoder_CPR,
+        10.0 * right_Master_Motor.getSelectedSensorVelocity() * DriveConstants.kWheel_Circumference_Meters
+            / DriveConstants.kEncoder_CPR);
   }
 
   public void arcadeDrive(double speed, double rotation, boolean useSquares) {
@@ -192,9 +174,8 @@ public class Drive_Subsystem extends SubsystemBase {
 
     if (xSpeed == 1) {
       zRotation *= 0.5;
-    }
-    else zRotation *=0.7;
-
+    } else
+      zRotation *= 0.7;
 
     if (useSquares) {
       xSpeed *= Math.abs(xSpeed);
@@ -209,78 +190,60 @@ public class Drive_Subsystem extends SubsystemBase {
 
     xSpeed = Deadband(xSpeed);
     zRotation = Deadband(zRotation);
- 
-		left_Master_Motor.set(ControlMode.PercentOutput, xSpeed, DemandType.ArbitraryFeedForward, +zRotation);
-	  right_Master_Motor.set(ControlMode.PercentOutput, xSpeed, DemandType.ArbitraryFeedForward, -zRotation);
+
+    left_Master_Motor.set(ControlMode.PercentOutput, xSpeed, DemandType.ArbitraryFeedForward, +zRotation);
+    right_Master_Motor.set(ControlMode.PercentOutput, xSpeed, DemandType.ArbitraryFeedForward, -zRotation);
 
   }
 
   public void tankDriveVelocity(double leftVelocity, double rightVelocity) {
-    var leftFeedForwardVolts = DriveConstants.FEED_FORWARD.calculate(leftVelocity)/10;
-   var rightFeedForwardVolts = DriveConstants.FEED_FORWARD.calculate(rightVelocity)/10;
+    var leftFeedForwardVolts = DriveConstants.FEED_FORWARD.calculate(leftVelocity) / 10;
+    var rightFeedForwardVolts = DriveConstants.FEED_FORWARD.calculate(rightVelocity) / 10;
 
-    left_Master_Motor.set(
-        ControlMode.Velocity, 
-        metersPerSecToEdgesPerDecisec(leftVelocity),    
-        DemandType.ArbitraryFeedForward,
-        leftFeedForwardVolts);
-    right_Master_Motor.set(
-        ControlMode.Velocity,
-        metersPerSecToEdgesPerDecisec(rightVelocity),
-        DemandType.ArbitraryFeedForward,
-        rightFeedForwardVolts);
+    left_Master_Motor.set(ControlMode.Velocity, metersPerSecToEdgesPerDecisec(leftVelocity),
+        DemandType.ArbitraryFeedForward, leftFeedForwardVolts);
+    right_Master_Motor.set(ControlMode.Velocity, metersPerSecToEdgesPerDecisec(rightVelocity),
+        DemandType.ArbitraryFeedForward, rightFeedForwardVolts);
   }
 
   public void resetOdometry(double start_x, double start_y) {
     resetEncoders();
     zeroHeading();
-    m_odometry.resetPosition(new Pose2d(start_x, start_y, Rotation2d.fromDegrees(0)), Rotation2d.fromDegrees(0));  
+    m_odometry.resetPosition(new Pose2d(start_x, start_y, Rotation2d.fromDegrees(0)), Rotation2d.fromDegrees(0));
     System.out.print("resseeet");
-
   }
 
   public void resetOdometry() {
     resetEncoders();
     zeroHeading();
-    m_odometry.resetPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)), Rotation2d.fromDegrees(0));  
+    m_odometry.resetPosition(new Pose2d(0, 0, Rotation2d.fromDegrees(0)), Rotation2d.fromDegrees(0));
     System.out.print("resseeet");
-
   }
-
-
-
-
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     left_Master_Motor.setVoltage(leftVolts);
-    right_Master_Motor.setVoltage(rightVolts);                   //todo
+    right_Master_Motor.setVoltage(rightVolts);
     m_drive.feed();
     System.out.print("Left: ");
     System.out.println(leftVolts);
     System.out.print("Right: ");
     System.out.println(rightVolts);
-  
   }
 
   public Command createCommandForTrajectory(Trajectory trajectory) {
-    return new RamseteCommand(
-            trajectory,
-            this::getPose,
-            new RamseteController(DriveConstants.kRamsete_B, DriveConstants.kRamsete_Zeta),
-            DriveConstants.kDrive_Kinematics,
-            this::tankDriveVelocity,
-            this);
+    return new RamseteCommand(trajectory, this::getPose,
+        new RamseteController(DriveConstants.kRamsete_B, DriveConstants.kRamsete_Zeta),
+        DriveConstants.kDrive_Kinematics, this::tankDriveVelocity, this);
   }
 
-
-  
-
   public double getRightEncoderDistance() {
-    return right_Master_Motor.getSelectedSensorPosition() * DriveConstants.kWheel_Circumference_Meters/ DriveConstants.kEncoder_CPR;
+    return right_Master_Motor.getSelectedSensorPosition() * DriveConstants.kWheel_Circumference_Meters
+        / DriveConstants.kEncoder_CPR;
   }
 
   public double getLeftEncoderDistance() {
-    return left_Master_Motor.getSelectedSensorPosition(0) * DriveConstants.kWheel_Circumference_Meters/ DriveConstants.kEncoder_CPR;
+    return left_Master_Motor.getSelectedSensorPosition(0) * DriveConstants.kWheel_Circumference_Meters
+        / DriveConstants.kEncoder_CPR;
   }
 
   public double getAverageEncoderDistance() {
@@ -299,7 +262,7 @@ public class Drive_Subsystem extends SubsystemBase {
     target = val;
   }
 
-  public void arcadeDrive(double fwd, double rot)   {
+  public void arcadeDrive(double fwd, double rot) {
     m_drive.arcadeDrive(fwd, rot, true);
   }
 
@@ -308,11 +271,11 @@ public class Drive_Subsystem extends SubsystemBase {
   }
 
   public double getHeading() {
-    return Math.IEEEremainder(m_gyro.getAngle(), 360.0d) * -1.0d;                         
+    return Math.IEEEremainder(m_gyro.getAngle(), 360.0d) * -1.0d;
   }
 
   public double getTurnRate() {
-    return m_gyro.getRate() * (DriveConstants.kGyro_Reversed ? -1.0 : 1.0);              
+    return m_gyro.getRate() * (DriveConstants.kGyro_Reversed ? -1.0 : 1.0);
   }
 
   public double getHeadingCW() {
@@ -339,18 +302,18 @@ public class Drive_Subsystem extends SubsystemBase {
   }
 
   double Deadband(double value) {
-		/* Upper deadband */
-		if (value >= +0.09) 
-			return value;
-		
-		/* Lower deadband */
-		if (value <= -0.09)
-			return value;
-		
-		/* Outside deadband */
-		return 0;
+    /* Upper deadband */
+    if (value >= +0.09)
+      return value;
+
+    /* Lower deadband */
+    if (value <= -0.09)
+      return value;
+
+    /* Outside deadband */
+    return 0;
   }
-  
+
   public void setBrake() {
     left_Master_Motor.setNeutralMode(NeutralMode.Brake);
     right_Master_Motor.setNeutralMode(NeutralMode.Brake);
@@ -367,10 +330,9 @@ public class Drive_Subsystem extends SubsystemBase {
     left_Master_Motor.set(ControlMode.PercentOutput, 0);
     right_Master_Motor.set(ControlMode.PercentOutput, 0);
 
-
   }
 
-  public void setVoltageComp () {
+  public void setVoltageComp() {
     left_Master_Motor.enableVoltageCompensation(true);
     left_Master_Motor.configVoltageCompSaturation(10);
 
@@ -379,17 +341,17 @@ public class Drive_Subsystem extends SubsystemBase {
 
   }
 
-  public void disableVoltageComp () {
+  public void disableVoltageComp() {
     left_Master_Motor.enableVoltageCompensation(false);
     right_Master_Motor.enableVoltageCompensation(false);
 
-
   }
 
-
   public void changeSlowMode() {
-    if(isSlowMode) isSlowMode=false;
-    else isSlowMode = true;
+    if (isSlowMode)
+      isSlowMode = false;
+    else
+      isSlowMode = true;
 
   }
 

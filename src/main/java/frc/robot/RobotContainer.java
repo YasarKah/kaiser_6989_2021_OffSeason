@@ -60,7 +60,7 @@ public class RobotContainer {
 
 
   private void configureButtonBindings() {
-    new JoystickButton(driver_Controller, XboxController.Button.kX.value).whenPressed(new ShootCommand(m_shooter));                                 //çalışmıyor düzeltilnesi lazım 
+    new JoystickButton(driver_Controller, XboxController.Button.kX.value).whenPressed(new ShootCommand(m_shooter));
     new JoystickButton(driver_Controller, XboxController.Button.kBumperLeft.value).whileHeld(new IndexCommand(m_indexer, m_shooter, m_intake));
 
     new JoystickButton(driver_Controller, XboxController.Button.kA.value).whenPressed(new IntakeCommand(m_intake,ledSystem));

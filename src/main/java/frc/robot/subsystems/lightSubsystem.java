@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class lightSubsystem extends SubsystemBase {
 
   public AddressableLED led = new AddressableLED(9);;
-  public AddressableLEDBuffer buffer = new AddressableLEDBuffer(48);;
+  public AddressableLEDBuffer buffer = new AddressableLEDBuffer(48);
 
   /** Creates a new lightSystem. */
   //Önde 26 LED

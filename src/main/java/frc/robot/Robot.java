@@ -57,7 +57,6 @@ public class Robot extends TimedRobot {
 
     m_robotContainer.m_drive.setBrake();
     m_robotContainer.m_drive.disableVoltageComp();
-
     m_robotContainer.m_intake.stop_Intake();
     m_robotContainer.m_shooter.shoot_Stop();
     m_robotContainer.m_indexer.stop_Indexer_auto();

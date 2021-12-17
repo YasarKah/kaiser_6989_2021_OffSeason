@@ -35,7 +35,6 @@ public class Shooter_Subsystem extends SubsystemBase {
 
   public void shoot_Start() {
     m_shooter_Motor.set(ControlMode.Velocity, ShooterConstants.kShooter_Target_PPS);
-
   }
 
   public void shoot_Stop() {
