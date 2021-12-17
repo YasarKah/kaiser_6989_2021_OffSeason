@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.TimeUnit;
-
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
@@ -33,7 +31,6 @@ public class lightSubsystem extends SubsystemBase {
 	for (var i = 0; i < buffer.getLength(); i++) {
 	  buffer.setRGB(i, 255, 255, 0);
 	  led.setData(buffer);
-	  System.out.println("led geldii");
 	}
   }
 
